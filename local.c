@@ -1765,8 +1765,18 @@ static int create_device(void *d, const char *path)
 		set_channel_name(chn);
 		ret = handle_scan_elements(chn);
 		free_protected_attrs(chn);
-		if (ret < 0)
-			goto err_free_scan_elements;
+		if (ret < 0) {
+			if (dev->name &&
+			    !strcmp("cros-ec-ring", dev->name)) {
+				DEBUG("ignoring cros-ec-ring\n");
+
+				/* pretend the operation completed successfully
+				 * even though we can't process the attributes
+				 * of the sensor ring */
+				ret = 0;
+				goto err_free_scan_elements;
+			}
+		}
 	}
 
 	ret = detect_and_move_global_attrs(dev);
