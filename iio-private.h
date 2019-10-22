@@ -132,6 +132,8 @@ struct iio_backend_ops {
 
 	void (*shutdown)(struct iio_context *ctx);
 
+	int (*request_client_id)(const struct iio_context *ctx);
+	int (*register_client_id)(const struct iio_device *dev);
 	int (*get_version)(const struct iio_context *ctx, unsigned int *major,
 			unsigned int *minor, char git_tag[8]);
 
@@ -167,6 +169,7 @@ struct iio_context {
 	char **attrs;
 	char **values;
 	unsigned int nb_attrs;
+	int client_id;
 };
 
 struct iio_channel {

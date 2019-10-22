@@ -743,6 +743,11 @@ static int network_open(const struct iio_device *dev,
 	ppdata->io_ctx.cancellable = false;
 	ppdata->io_ctx.timeout_ms = DEFAULT_TIMEOUT_MS;
 
+	ret = iiod_client_register_client_id(dev->ctx->pdata->iiod_client,
+			&ppdata->io_ctx, dev->ctx->client_id);
+	if (ret < 0)
+		printf ("Failed to register client id: %i\n", ret);
+
 	ret = iiod_client_open_unlocked(pdata->iiod_client,
 			&ppdata->io_ctx, dev, samples_count, cyclic);
 	if (ret < 0)

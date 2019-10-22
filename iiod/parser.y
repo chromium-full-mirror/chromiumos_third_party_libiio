@@ -72,6 +72,8 @@ ssize_t yy_input(yyscan_t scanner, char *buf, size_t max_size);
 
 %token VERSION
 %token EXIT
+%token REQUEST_CLIENT_ID
+%token REGISTER_CLIENT_ID
 %token HELP
 %token OPEN
 %token CLOSE
@@ -116,6 +118,10 @@ Line:
 		"\t\tPrint this help message\n"
 		"\tEXIT\n"
 		"\t\tClose the current session\n"
+		"\tREQUEST_CLIENT_ID\n"
+		"\t\tA new client requesting a unique client id\n"
+		"\tREGISTER_CLIENT_ID <client_id>\n"
+		"\t\tA subchannel of a client registering the fd with the client id\n"
 		"\tPRINT\n"
 		"\t\tDisplays a XML string corresponding to the current IIO context\n"
 		"\tVERSION\n"
@@ -140,6 +146,18 @@ Line:
 		"\t\tSet the trigger to use for the specified device\n"
 		"\tSET <device> BUFFERS_COUNT <count>\n"
 		"\t\tSet the number of kernel buffers for the specified device\n");
+		YYACCEPT;
+	}
+	| REQUEST_CLIENT_ID END {
+		struct parser_pdata *pdata = yyget_extra(scanner);
+		// Don't care if it's unique or not
+		output(pdata, "0\n");
+		YYACCEPT;
+	}
+	| REGISTER_CLIENT_ID SPACE VALUE END {
+		struct parser_pdata *pdata = yyget_extra(scanner);
+		// Always success
+		output(pdata, "0\n");
 		YYACCEPT;
 	}
 	| VERSION END {

@@ -38,6 +38,15 @@ WORD (([[:alpha:]]+,)|(iio:))?(-|_|\.|[[:alnum:]])+
 	return VERSION;
 }
 
+<INITIAL>REQUEST_CLIENT_ID|request_client_id {
+	return REQUEST_CLIENT_ID;
+}
+
+<INITIAL>REGISTER_CLIENT_ID|register_client_id {
+	BEGIN(WANT_VALUE);
+	return REGISTER_CLIENT_ID;
+}
+
 <INITIAL>PRINT|print {
 	return PRINT;
 }

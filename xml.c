@@ -344,6 +344,7 @@ static struct iio_context * iio_create_xml_context_helper(xmlDoc *doc)
 
 	ctx->name = "xml";
 	ctx->ops = &xml_ops;
+	ctx->client_id = -1;
 
 	root = xmlDocGetRootElement(doc);
 	if (strcmp((char *) root->name, "context")) {

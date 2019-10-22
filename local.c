@@ -1991,6 +1991,7 @@ struct iio_context * local_create_context(void)
 
 	ctx->ops = &local_ops;
 	ctx->name = "local";
+	ctx->client_id = -1;
 
 	ctx->pdata = zalloc(sizeof(*ctx->pdata));
 	if (!ctx->pdata) {
